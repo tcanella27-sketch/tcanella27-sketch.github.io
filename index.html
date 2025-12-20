@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Проверка SmartShell SDK</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    button {
+      padding: 10px 15px;
+      margin: 5px 0;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+    #user-info, #clubs-list {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Проверка SDK SmartShell</h1>
+
+    <!-- Кнопки управления -->
+    <button onclick="getCurrentUser()">Получить пользователя</button>
+    <button onclick="getUserClubs()">Получить клубы</button>
+
+    <!-- Зоны вывода данных -->
+    <div id="user-info"></div>
+    <div id="clubs-list"></div>
+  </div>
+
+  <!-- Подключение SDK и вашего скрипта -->
+  <script type="module">
+    import { Shell } from "jsr:@xlsoftware/smartshell-sdk";
+    
+    // Инициализация Shell (замените на свои данные)
+    const shell = await new Shell({
+      credentials: {
+        login: 'ВАШ_ЛОГИН',
+        password: 'ВАШ_ПАРОЛЬ'
+      },
+      anonymous: false,
+      host: 'billing'
+    });
+
+    // Функции для работы с API
+    async function getCurrentUser() {
+      try {
+        const user = await shell.api.users.getCurrent();
+        document.getElementById('user-info').innerHTML = `
+          <h3>Пользователь</h3>
+          <p><strong>ID:</strong> ${user.id}</p>
+          <p><strong>Имя:</strong> ${user.name}</p>
+          <p><strong>Email:</strong> ${user.email || 'не указан'}</p>
+        `;
+      } catch (error) {
+        document.getElementById('user-info').innerHTML = `
+          <p style="color:red;">Ошибка: ${error.message}</p>
+        `;
+      }
+    }
+
+    async function getUserClubs() {
+      try {
+        const clubs = await shell.api.users.getClubs();
+        const clubsList = clubs.map(club => `
+          <li>
+            <strong>ID:</strong> ${club.id} |
+            <strong>Название:</strong> ${club.name} |
+            <strong>Адрес:</strong> ${club.address || 'нет данных'}
+          </li>
+        `).join('');
+        document.getElementById('clubs-list').innerHTML = `
+          <h3>Клубы пользователя</h3>
+          <ul>${clubsList}</ul>
+        `;
+      } catch (error) {
+        document.getElementById('clubs-list').innerHTML = `
+          <p style="color:red;">Ошибка: ${error.message}</p>
+        `;
+      }
+    }
+  </script>
+</body>
+</html>
