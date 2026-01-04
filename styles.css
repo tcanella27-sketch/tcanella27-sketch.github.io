@@ -1,0 +1,37 @@
+.price-card {
+  background: #1A0A2A;
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 8px 24px rgba(110, 68, 255, 0.2);
+  border: 1px solid transparent;
+  border-image: linear-gradient(45deg, #6E44FF, #B388FF) 1;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.price-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(110, 68, 255, 0.3);
+}
+
+.price {
+  color: #FF4081;
+  font-size: 24pt;
+  font-weight: bold;
+  margin: 12px 0;
+}
+
+.btn-cta {
+  background: #FF4081;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.btn-cta:hover {
+  background: #E03071;
+  box-shadow: 0 0 15px #FF4081;
+}
